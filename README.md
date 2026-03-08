@@ -8,7 +8,7 @@ RideMonitor, aracınızın anlık verilerini (akü voltajı, sıcaklık, rakım 
 
 Bu projeyi hayata geçirmek için aşağıdaki bileşenlere ihtiyacınız olacak:
 
-* **Arduino Uno** (Veya benzeri bir geliştirme kartı)
+* **Arduino Nano** (Veya benzeri bir geliştirme kartı)
 * **0.91" OLED Ekran** (128x32 piksel, I2C iletişimli - SSD1306)
 * **BMP085 / BMP180** Basınç ve Sıcaklık Sensörü
 * **Push Buton** (Menü değişimi için)
@@ -65,7 +65,7 @@ RideMonitor is an Arduino-based monitoring system that allows you to view your v
 
 To build this project, you will need the following components:
 
-* **Arduino Uno** (Or equivalent development board)
+* **Arduino Nano** (Or equivalent development board)
 * **0.91" OLED Display** (128x32 pixels, I2C interface - SSD1306)
 * **BMP085 / BMP180** Pressure and Temperature Sensor
 * **Push Button** (For menu switching)

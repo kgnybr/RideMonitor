@@ -8,10 +8,13 @@ Adafruit_BMP085 bmp;
 
 #define SCREEN_WIDTH 128
 #define SCREEN_HEIGHT 32
-
+const int ignitionPin = 2;
+volatile unsigned long pulseCount = 0;
+unsigned long previousTime = 0;
+unsigned int rpm = 0;
 const int buttonPin = 10;
 const int voltagePin = A0;
-const float voltage_carpan = 0.0215046; // 3.3k ve 1k icin
+const float voltage_carpan = 0.0215046;  // 3.3k ve 1k icin
 const int ledPins[] = { 3, 4, 5, 6, 7, 8, 9 };
 const int ledCount = sizeof(ledPins) / sizeof(ledPins[0]);  
 Bounce debouncer = Bounce();                                
@@ -20,7 +23,9 @@ float pressure_hPa;
 float akuGerilimi;
 int analogDeger;
 
+
 Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, -1);
+
 
 const uint8_t carLogo[] PROGMEM = {
   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
@@ -229,19 +234,22 @@ const uint8_t akuLogo[] PROGMEM = {
 
 void setup() {
   pinMode(buttonPin, INPUT_PULLUP);
+  pinMode(ignitionPin, INPUT);
+  attachInterrupt(digitalPinToInterrupt(ignitionPin), countPulse, RISING);
   for (int i = 0; i < ledCount; i++) {
     pinMode(ledPins[i], OUTPUT);
+    digitalWrite(ledPins[i], LOW);
   }
   debouncer.attach(buttonPin);
-  debouncer.interval(5);  // 5 ms'lik bir debounce süresi
+  debouncer.interval(5);  
   Serial.begin(9600);
   if (!bmp.begin()) {
     Serial.println("BMP085 başlatılamadı, sensör bulunamadı");
     while (1)
-      ;  // Hata durumunda sonsuz döngüye girer
+      ;  
   }
   display.begin(SSD1306_SWITCHCAPVCC, 0x3C);  
-  display.setTextColor(WHITE);                
+  display.setTextColor(WHITE);               
   menuWelcome();
   delay(2000);
   menuAIO();
@@ -249,6 +257,15 @@ void setup() {
 }
 
 void loop() {
+  unsigned long currentTime = millis();
+  if (currentTime - previousTime >= 250) {
+    
+    unsigned long frequency = 4*pulseCount;
+    rpm = (frequency * 60) / 2;
+    pulseCount = 0;
+    previousTime = currentTime;
+  }
+  rpmLed(rpm);
   debouncer.update();
   if (debouncer.fell()) {
     menuSayac++;
@@ -264,7 +281,7 @@ void loop() {
     menuPressure();
   } else if (menuSayac == 4) {
     menuVoltage();
-  } 
+  }
 }
 
 
@@ -307,7 +324,7 @@ void menuRPM() {
   display.drawBitmap(0, 0, rpmLogo, SCREEN_WIDTH, SCREEN_HEIGHT, WHITE);
   display.setCursor(40, 8);
   display.setTextSize(2);
-  display.print("RPM ");
+  display.print(rpm);
   display.display();
 }
 void menuVoltage() {
@@ -340,5 +357,16 @@ void menuAIO() {
   display.print(" m");
   display.display();
 }
+void countPulse() {
+  pulseCount++;
+}
+void rpmLed(int rpm) {
+   for (int i = 0; i < ledCount; i++) {
+    if (rpm > i * 1000) {
+      digitalWrite(ledPins[i], HIGH); 
+    } else {
+      digitalWrite(ledPins[i], LOW); 
+  }
 
+}
 

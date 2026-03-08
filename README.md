@@ -46,7 +46,8 @@ Bu projeyi hayata geçirmek için aşağıdaki bileşenlere ihtiyacınız olacak
 2.  **Kodu Yükleyin:** `RideMonitor.ino` dosyasını Arduino IDE ile açın ve kartınıza yükleyin.
 
 3.  **Kullanım:** Cihaz açıldığında bir karşılama logosu (`menuWelcome`) ve ardından genel özet ekranı (`menuAIO`) görünür. Butona basarak şu menüler arasında gezinebilirsiniz:
-    * **RPM:** Devir göstergesi (Geliştirme aşamasında).
+    * **RPM:** Devir göstergesi 
+    .
     * **Sıcaklık:** BMP sensöründen gelen ortam sıcaklığı (°C).
     * **Rakım:** Deniz seviyesinden yükseklik (Metre).
     * **Basınç:** Hava basıncı (hPa).
@@ -102,7 +103,7 @@ To build this project, you will need the following components:
 2.  **Upload the Code:** Open `RideMonitor.ino` in the Arduino IDE and upload it to your board.
 
 3.  **Usage:** Upon startup, a welcome logo is displayed followed by an All-in-One summary screen. Press the button to cycle through the following menus:
-    * **RPM:** RPM display (Under development).
+    * **RPM:** RPM display .
     * **Temperature:** Ambient temperature from BMP sensor (°C).
     * **Altitude:** Altitude above sea level (Meters).
     * **Pressure:** Atmospheric pressure (hPa).
